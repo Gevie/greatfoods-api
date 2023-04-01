@@ -2,15 +2,19 @@ jms_serializer:
     visitors:
         xml_serialization:
             format_output: '%kernel.debug%'
-#    metadata:
-#        auto_detection: false
-#        directories:
-#            any-name:
-#                namespace_prefix: "My\\FooBundle"
-#                path: "@MyFooBundle/Resources/config/serializer"
-#            another-name:
-#                namespace_prefix: "My\\BarBundle"
-#                path: "@MyBarBundle/Resources/config/serializer"
+    default_context:
+        serialization:
+            enable_max_depth_checks: true
+    metadata:
+        auto_detection: true
+        directories:
+            v1:
+                namespace_prefix: App\Api\V1
+                path: "%kernel.project_dir%/config/serializer/v1"
+                version: '1.0'
+    handlers:
+        datetime:
+            default_format: Y-m-d H:i:s
 
 when@prod:
     jms_serializer:
