@@ -12,6 +12,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * Class ApiController
  * 
+ * The abstract api controller with common functionality for all children.
+ * 
  * @package App\Api\V1\Controller
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */
@@ -28,7 +30,7 @@ abstract class ApiController extends AbstractController
     }
 
     /**
-     * Validates a passed Data Transfer Object
+     * Validates a passed Data Transfer Object.
      *
      * @param DtoInterface $dto The data transfer object to validate
      * @param Constraint|array|null $constraints Any optional constraints

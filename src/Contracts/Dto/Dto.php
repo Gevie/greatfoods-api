@@ -2,6 +2,14 @@
 
 namespace App\Contracts\Dto;
 
+/**
+ * Interface Dto
+ * 
+ * A generic Data Transfer Object (DTO) interface for moving data around the system.
+ * 
+ * @package App\Contracts\Dto
+ * @author Stephen Speakman <hellospeakman@gmail.com>
+ */
 interface Dto
 {
     /**

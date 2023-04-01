@@ -7,6 +7,8 @@ use App\Contracts\Entity\Menu as MenuInterface;
 /**
  * Interface MenuRepository
  * 
+ * This interface is a Doctrine repository for managing Menu entities in the application.
+ * 
  * @package App\Contracts\Repository
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */
