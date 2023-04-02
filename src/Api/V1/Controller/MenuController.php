@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @package App\Api\V1\Controller
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */
-#[Route('/api/v1/menus', name: 'api_v1_menus')]
+#[Route('/menus', name: 'api_v1_menus_')]
 class MenuController extends ApiController
 {
     /**
@@ -95,7 +95,7 @@ class MenuController extends ApiController
     public function index(): JsonResponse
     {
         $menus = $this->menuRepository->findAll();
-        $response = $this->serializer->serialize($menus, MenuSerializer::class);
+        $response = $this->serializer->serialize($menus, 'json');
 
         return $this->json($response, 200);
     }

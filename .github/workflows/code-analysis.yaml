@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: composer install --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader --no-suggest
 
-      - name: Check code style
+      - name: Check code style with PHP Codesniffer
         run: vendor/bin/phpcs
 
       - name: Check static analysis with Psalm

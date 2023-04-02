@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */
 #[ORM\Entity(repositoryClass: MenuRepository::class)]
+#[ORM\Table(name: 'menus')]
 class Menu extends AbstractMenu
 {
     /**
