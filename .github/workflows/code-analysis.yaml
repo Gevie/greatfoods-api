@@ -40,8 +40,3 @@ jobs:
           if [ $phpcs_result -ne 0 ] || [ $psalm_result -ne 0 ] || [ $phpstan_result -ne 0 ]; then
             exit 1
           fi
-
-      - name: Commit linter results
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: 'reports/code-analysis.sarif'
