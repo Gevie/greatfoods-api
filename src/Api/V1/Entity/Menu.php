@@ -11,9 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Menu
- * 
+ *
  * Represents a menu item in the application.
- * 
+ *
  * @package App\Api\V1\Entity
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */
@@ -78,8 +78,8 @@ class Menu extends AbstractMenu
      * Sets the description of the menu item.
      *
      * @param string|null $description The description or null
-     * 
-     * @return self 
+     *
+     * @return self
      */
     public function setDescription(?string $description): self
     {
@@ -92,7 +92,7 @@ class Menu extends AbstractMenu
      * Sets the name of the menu item.
      *
      * @param string $name The name
-     * 
+     *
      * @return self
      */
     public function setName(string $name): self
@@ -106,7 +106,7 @@ class Menu extends AbstractMenu
      * Sets the order of the menu item.
      *
      * @param integer|null $order The order or null
-     * 
+     *
      * @return self
      */
     public function setOrder(?int $order): self

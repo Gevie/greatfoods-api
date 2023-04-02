@@ -11,9 +11,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class MenuService
- * 
+ *
  * Provides a service for creating and managing menu entities.
- * 
+ *
  * @package App\Api\V1\Service
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */
@@ -36,7 +36,7 @@ class MenuService
      * Creates a new menu entity with the given name, description and order.
      *
      * @param MenuDto $menuDto The Menu Data Transfer Object
-     * 
+     *
      * @return Menu The newly created menu entity
      */
     public function create(MenuDto $menuDto): Menu
@@ -69,7 +69,7 @@ class MenuService
      *
      * @param Menu $menu The menu entity to update
      * @param MenuDto $menuDto The Menu Data Transfer Object
-     * 
+     *
      * @return Menu The newly updated menu entity
      */
     public function update(Menu $menu, MenuDto $menuDto): Menu

@@ -9,9 +9,9 @@ use Doctrine\Persistence\ObjectManager;
 
 /**
  * Class AppFixtures
- * 
+ *
  * Fixture class for loading data into the database during development and testing.
- * 
+ *
  * @package App\DataFixtures
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */

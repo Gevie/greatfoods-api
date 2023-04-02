@@ -16,9 +16,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class MenuController.
- * 
+ *
  * Handles all menu related requests coming from the API.
- * 
+ *
  * @package App\Api\V1\Controller
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */
@@ -46,7 +46,7 @@ class MenuController extends ApiController
      * Create a new menu entity and return it as a JSON response.
      *
      * @param Request $request The HTTP request object
-     * 
+     *
      * @return JsonResponse The JSON response containing the newly created menu entity
      */
     #[Route('/', name: 'create', methods: ['POST'])]
@@ -54,15 +54,15 @@ class MenuController extends ApiController
     {
         /** @var MenuDto $menuDto */
         $menuDto = $this->serializer->deserialize($request->getContent(), MenuDto::class, 'json');
-    
+
         $errors = $this->validateDto($menuDto);
         if ($errors) {
             return $this->json(['errors' => $errors], 400);
         }
-    
+
         $menu = $this->menuService->create($menuDto);
         $response = $this->serializer->serialize($menu, MenuSerializer::class);
-    
+
         return $this->json($response, JsonResponse::HTTP_CREATED);
     }
 
@@ -70,7 +70,7 @@ class MenuController extends ApiController
      * Deletes a menu entity and return a JSON response.
      *
      * @param int $menuId The id of the menu item
-     * 
+     *
      * @return JsonResponse The JSON response indicating the status of the deletion
      */
     #[Route('/{menuId}', name: 'delete', methods: ['DELETE'])]
@@ -85,7 +85,7 @@ class MenuController extends ApiController
 
         return $this->json(['message' => 'Menu item deleted'], JsonResponse::HTTP_OK);
     }
-    
+
     /**
      * Get a JSON response of all menus.
      *
@@ -104,7 +104,7 @@ class MenuController extends ApiController
      * Get a JSON response for a single menu item.
      *
      * @param int $menuId The ID of the menu item
-     * 
+     *
      * @return JsonResponse The JSON response
      */
     #[Route('/{menuId}', name: 'show', methods:['GET'])]
@@ -114,7 +114,7 @@ class MenuController extends ApiController
         if (! $menu) {
             throw $this->createNotFoundException(sprintf('Menu item "%d" not found', $menuId));
         }
-        
+
         $response = $this->serializer->serialize($menu, MenuSerializer::class);
 
         return $this->json($response, JsonResponse::HTTP_OK);
@@ -125,7 +125,7 @@ class MenuController extends ApiController
      *
      * @param Request $request The HTTP request object
      * @param int $menuId The id of the menu item
-     * 
+     *
      * @return JsonResponse The JSON response containing the newly updated menu entity
      */
     #[Route('/{menuId}', name: 'update', methods: ['PUT'])]

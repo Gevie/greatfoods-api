@@ -6,9 +6,9 @@ use App\Contracts\Entity\Menu as MenuInterface;
 
 /**
  * Interface MenuRepository
- * 
+ *
  * This interface is a Doctrine repository for managing Menu entities in the application.
- * 
+ *
  * @package App\Contracts\Repository
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */
@@ -19,7 +19,7 @@ interface MenuRepository
      *
      * @param MenuInterface $menu The menu item to remove permanently.
      * @param bool $flush Whether to flush the changes to the database immediately.
-     * 
+     *
      * @return void
      */
     public function permanentlyRemove(MenuInterface $menu, bool $flush = false): void;

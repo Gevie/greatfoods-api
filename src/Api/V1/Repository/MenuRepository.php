@@ -12,12 +12,12 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class MenuRepository
- * 
+ *
  * This class is a Doctrine repository for managing Menu entities in the application.
- * 
+ *
  * @package App\Api\V1\Repository
  * @author Stephen Speakman <hellospeakman@gmail.com>
- * 
+ *
  * @extends ServiceEntityRepository<Menu>
  *
  * @method Menu|null find($id, $lockMode = null, $lockVersion = null)
@@ -42,7 +42,7 @@ class MenuRepository extends ServiceEntityRepository implements MenuRepositoryIn
      *
      * @param MenuInterface $menu The menu item to remove permanently
      * @param bool $flush Whether to flush the changes to the database immediately
-     * 
+     *
      * @return void
      */
     public function permanentlyRemove(MenuInterface $menu, bool $flush = false): void

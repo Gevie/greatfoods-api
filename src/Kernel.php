@@ -9,9 +9,9 @@ use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
 /**
  * Class Kernel
- * 
+ *
  * The application kernel.
- * 
+ *
  * @package App
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */

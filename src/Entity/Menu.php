@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Contracts\Entity\Menu as MenuInterface;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Menu
- * 
+ *
  * Represents a menu item in the application.
- * 
+ *
  * @package App\Entity
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */
@@ -33,26 +35,26 @@ abstract class Menu implements MenuInterface
     /**
      * The created attribute.
      *
-     * @var \DateTimeInterface
+     * @var DateTimeInterface
      */
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: false)]
-    private \DateTimeInterface $created;
+    private DateTimeInterface $created;
 
     /**
      * The modified attribute.
      *
-     * @var \DateTimeInterface|null
+     * @var DateTimeInterface|null
      */
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $modified = null;
+    private ?DateTimeInterface $modified = null;
 
     /**
      * The deleted attribute.
      *
-     * @var \DateTimeInterface|null
+     * @var DateTimeInterface|null
      */
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $deleted = null;
+    private ?DateTimeInterface $deleted = null;
 
     /**
      * Soft deletes the menu item.
@@ -61,15 +63,15 @@ abstract class Menu implements MenuInterface
      */
     public function delete(): void
     {
-        $this->deleted = new \DateTimeImmutable;
+        $this->deleted = new DateTimeImmutable();
     }
 
     /**
      * Gets the created timestamp of the menu item.
      *
-     * @return \DateTimeInterface|null The created timestamp or null
+     * @return DateTimeInterface|null The created timestamp or null
      */
-    public function getCreated(): ?\DateTimeInterface
+    public function getCreated(): ?DateTimeInterface
     {
         return $this->created;
     }
@@ -77,9 +79,9 @@ abstract class Menu implements MenuInterface
     /**
      * Gets the deleted timestamp of the menu item.
      *
-     * @return \DateTimeInterface|null The deleted timestamp or null
+     * @return DateTimeInterface|null The deleted timestamp or null
      */
-    public function getDeleted(): ?\DateTimeInterface
+    public function getDeleted(): ?DateTimeInterface
     {
         return $this->deleted;
     }
@@ -97,9 +99,9 @@ abstract class Menu implements MenuInterface
     /**
      * Gets the modified timestamp of the menu item.
      *
-     * @return \DateTimeInterface|null The modified timestamp or null
+     * @return DateTimeInterface|null The modified timestamp or null
      */
-    public function getModified(): ?\DateTimeInterface
+    public function getModified(): ?DateTimeInterface
     {
         return $this->modified;
     }
@@ -132,7 +134,7 @@ abstract class Menu implements MenuInterface
     #[ORM\PrePersist]
     public function setCreatedOnPersist(): void
     {
-        $this->created = new \DateTimeImmutable;
+        $this->created = new DateTimeImmutable();
     }
 
     /**
@@ -143,6 +145,6 @@ abstract class Menu implements MenuInterface
     #[ORM\PreUpdate]
     public function setModifiedOnUpdate(): void
     {
-        $this->modified = new \DateTimeImmutable;
+        $this->modified = new DateTimeImmutable();
     }
 }

@@ -4,9 +4,9 @@ namespace App\Contracts\Entity;
 
 /**
  * Interface Menu
- * 
+ *
  * Represents a menu item in the application.
- * 
+ *
  * @package App\Contracts\Entity
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */

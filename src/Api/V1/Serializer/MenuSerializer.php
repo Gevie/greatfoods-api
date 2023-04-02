@@ -11,9 +11,9 @@ use JMS\Serializer\SerializerInterface;
 
 /**
  * Class MenuSerializer
- * 
+ *
  * Serializes and deserializes Menu entities to and from JSON format.
- * 
+ *
  * @package App\Api\V1\Serializer
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */
@@ -33,7 +33,7 @@ class MenuSerializer
      * Deserializes a JSON string into a Menu object.
      *
      * @param string $json The JSON string to deserialize
-     * @param string|null $type The type of object to create. Default is null, which means that the type will be inferred from the JSON string.
+     * @param string|null $type The type of object to create. Default is null, the type will be inferred from the JSON.
      *
      * @return Menu The deserialized Menu object
      */
@@ -51,7 +51,7 @@ class MenuSerializer
      * Serializes a Menu object into a JSON string.
      *
      * @param Menu $menu The menu entity
-     * 
+     *
      * @return string The JSON string
      */
     public function serialize(Menu $menu): string

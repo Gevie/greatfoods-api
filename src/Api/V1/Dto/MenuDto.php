@@ -10,9 +10,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class MenuDto
- * 
+ *
  * A Data Transfer Object (DTO) used to move menu data around the system.
- * 
+ *
  * @package App\Api\V1\Dto
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */
@@ -20,7 +20,7 @@ class MenuDto implements DtoInterface
 {
     /**
      * The name of the menu.
-     * 
+     *
      * @var string
      */
     #[Serializer\Type('string')]
@@ -31,7 +31,7 @@ class MenuDto implements DtoInterface
 
     /**
      * The description of the menu.
-     * 
+     *
      * @var string|null
      */
     #[Serializer\Type('string')]
