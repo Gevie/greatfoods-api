@@ -2,11 +2,9 @@ name: Code Quality Check
 
 on:
   push:
-    branches:
-      - ['*']
+    branches: ['*']
   pull_request:
-    branches:
-      - ['*']
+    branches: ['*']
 
 jobs:
   code_quality:
