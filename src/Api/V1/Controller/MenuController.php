@@ -97,7 +97,7 @@ class MenuController extends ApiController
         $menus = $this->menuRepository->findAll();
         $response = $this->serializer->serialize($menus, 'json');
 
-        return $this->json($response, 200);
+        return new JsonResponse(json_decode($response), JsonResponse::HTTP_OK);
     }
 
     /**
