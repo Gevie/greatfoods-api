@@ -42,6 +42,6 @@ jobs:
           fi
 
       - name: Commit linter results
-        uses: github/codeql-action/upload-sarif@v1
+        uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: 'reports/code-analysis.sarif'
