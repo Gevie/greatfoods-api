@@ -1,0 +1,40 @@
+name: Code Quality Check
+
+on:
+  push:
+    branches:
+      - ['*']
+  pull_request:
+    branches:
+      - ['*']
+
+jobs:
+  code_quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: intl, opcache, pdo, pdo_mysql, zip
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader --no-suggest
+
+      - name: Check code style
+        run: vendor/bin/phpcs
+
+      - name: Check static analysis with Psalm
+        run: vendor/bin/psalm
+
+      - name: Check static analysis with PHPStan
+        run: vendor/bin/phpstan analyze --memory-limit=-1
+
+      - name: Commit linter results
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: 'reports/code-analysis.sarif'
