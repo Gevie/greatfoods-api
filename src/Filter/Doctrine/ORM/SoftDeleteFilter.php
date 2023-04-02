@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filter\Doctrine\ORM;
 
-use Doctrine\ORM\Mapping\ClassMetaData;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 
 /**
@@ -22,7 +22,7 @@ class SoftDeleteFilter extends SQLFilter
     /**
      * Adds the filter constraint to the SQL query.
      *
-     * @param ClassMetadata $targetEntity The metadata for the targeted entity
+     * @param ClassMetadata<object> $targetEntity The metadata for the targeted entity
      * @param string $targetTableAlias The alias of the target table
      *
      * @return string The SQL filter constraint

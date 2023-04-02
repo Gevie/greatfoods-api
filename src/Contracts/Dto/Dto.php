@@ -15,7 +15,7 @@ interface Dto
     /**
      * Returns an array of validation groups for a given operation.
      *
-     * @return array The validation groups
+     * @return array<string> The validation groups
      */
     public function getValidationGroups(): array;
 }

@@ -18,7 +18,7 @@ doctrine:
                 alias: App
         filters:
             soft_delete:
-                class: SoftDeleteFilter
+                class: App\Filter\Doctrine\ORM\SoftDeleteFilter
                 enabled: true
 
 when@test:

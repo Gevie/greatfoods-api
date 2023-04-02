@@ -33,8 +33,9 @@ abstract class ApiController extends AbstractController
      * Validates a passed Data Transfer Object.
      *
      * @param DtoInterface $dto The data transfer object to validate
-     * @param Constraint|array|null $constraints Any optional constraints
-     * @return array An error of validation errors, an empty array means no errors
+     * @param Constraint|Constraint[]|null $constraints Any optional constraints
+     * 
+     * @return string[]|\Stringable[] An error of validation errors, an empty array means no errors
      */
     protected function validateDto(DtoInterface $dto, Constraint|array $constraints = null): array
     {

@@ -43,6 +43,7 @@ class MenuSerializer
             ->setGroups(['menu'])
             ->setVersion('1.0');
 
+        /** @var Menu */
         return $this->serializer->deserialize($json, $type ?? Menu::class, 'json', $context);
     }
 

@@ -27,7 +27,7 @@ class MenuDto implements DtoInterface
     #[Assert\NotBlank(message: 'Name cannot be blank')]
     #[Assert\Length(max: 128, maxMessage: 'Name cannot be longer than {{ limit }} characters')]
     #[Serializer\Since('1.0')]
-    public string $name;
+    public string $name = '';
 
     /**
      * The description of the menu.
@@ -35,7 +35,7 @@ class MenuDto implements DtoInterface
      * @var string|null
      */
     #[Serializer\Type('string')]
-    #[Assert\Length(max: 255, message: 'Description cannot be longer than {{ limit }} characters')]
+    #[Assert\Length(max: 255, maxMessage: 'Description cannot be longer than {{ limit }} characters')]
     #[Serializer\Since('1.0')]
     public ?string $description = null;
 
@@ -53,7 +53,7 @@ class MenuDto implements DtoInterface
     /**
      * Returns an array of validation groups for a given operation.
      *
-     * @return array The validation groups
+     * @return array<string> The validation groups
      */
     public function getValidationGroups(): array
     {

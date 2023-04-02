@@ -28,8 +28,10 @@ class MenuController extends ApiController
     /**
      * MenuController constructor.
      *
+     * @param ValidatorInterface $validator The validator
      * @param SerializerInterface $serializer The serializer
      * @param MenuRepository $menuRepository The menu repository
+     * @param MenuService $menuService The menu service
      */
     public function __construct(
         protected ValidatorInterface $validator,
@@ -50,15 +52,17 @@ class MenuController extends ApiController
     #[Route('/', name: 'create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
+        /** @var MenuDto $menuDto */
         $menuDto = $this->serializer->deserialize($request->getContent(), MenuDto::class, 'json');
+    
         $errors = $this->validateDto($menuDto);
         if ($errors) {
             return $this->json(['errors' => $errors], 400);
         }
-
+    
         $menu = $this->menuService->create($menuDto);
         $response = $this->serializer->serialize($menu, MenuSerializer::class);
-
+    
         return $this->json($response, JsonResponse::HTTP_CREATED);
     }
 
@@ -132,6 +136,7 @@ class MenuController extends ApiController
             throw $this->createNotFoundException(sprintf('Menu item "%d" not found', $menuId));
         }
 
+        /** @var MenuDto $menuDto */
         $menuDto = $this->serializer->deserialize($request->getContent(), MenuDto::class, 'json');
         $errors = $this->validateDto($menuDto);
         if ($errors) {

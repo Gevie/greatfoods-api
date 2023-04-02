@@ -35,7 +35,7 @@ class MenuService
     /**
      * Creates a new menu entity with the given name, description and order.
      *
-     * @param MenuDto The Menu Data Transfer Object
+     * @param MenuDto $menuDto The Menu Data Transfer Object
      * 
      * @return Menu The newly created menu entity
      */
@@ -67,8 +67,8 @@ class MenuService
     /**
      * Updates a menu entity with the given name, description and order.
      *
-     * @param Menu The menu entity to update
-     * @param MenuDto The Menu Data Transfer Object
+     * @param Menu $menu The menu entity to update
+     * @param MenuDto $menuDto The Menu Data Transfer Object
      * 
      * @return Menu The newly updated menu entity
      */
