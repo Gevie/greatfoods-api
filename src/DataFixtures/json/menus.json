@@ -1,0 +1,42 @@
+[
+    {
+        "name": "Sharing Bundles",
+        "description": null,
+        "order": 1
+    },
+    {
+        "name": "Chicken Sandwiches",
+        "description": "100% Fresh chicken marinated for 12 hours in our signature blend of Louisiana herbs & spices. Then breaded and battered by hand and served in a fresh brioche bun. Your choice of Classic or SPICY!",
+        "order": 2
+    },
+    {
+        "name": "Signature Louisiana Wraps",
+        "description": null,
+        "order": 3
+    },
+    {
+        "name": "Hot Wings",
+        "description": "Freshly cooked spicy wings. Y'all ready for this?",
+        "order": 4
+    },
+    {
+        "name": "Tenders",
+        "description": "100% Fresh chicken tenders, 12 hr marinated & hand-battered with buttermilk for our best ever shatter-crunch. Your choice of Classic or SPICY!",
+        "order": 5
+    },
+    {
+        "name": "Sides",
+        "description": null,
+        "order": 6
+    },
+    {
+        "name": "Dips",
+        "description": null,
+        "order": 7
+    },
+    {
+        "name": "Drinks",
+        "description": null,
+        "order": 8
+    }
+]
