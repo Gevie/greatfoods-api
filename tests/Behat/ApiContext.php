@@ -134,6 +134,7 @@ abstract class ApiContext implements Context
             throw new RuntimeException(sprintf('The method "%s" is not a valid HTTP method', $method));
         }
 
+        dump(getenv('APP_ENV'));
         $response = $this->httpClient->request($method, sprintf('%s/%s',
             $this->kernel->getContainer()->getParameter('api_base_url'),
             $endpoint

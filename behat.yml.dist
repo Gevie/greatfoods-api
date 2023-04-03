@@ -5,8 +5,12 @@ default:
                 - App\Tests\Behat\ApiMenuContext
 
     extensions:
+        Symfony\Behat3Extension:
+            environment_variables:
+                APP_ENV: test
+                
         FriendsOfBehat\SymfonyExtension:
-            bootstrap: 'config/behat/bootstrap.php'
+            bootstrap: tests/bootstrap.php
             kernel:
                 environment: test
                 debug: true

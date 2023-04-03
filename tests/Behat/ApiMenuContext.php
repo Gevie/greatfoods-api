@@ -6,7 +6,6 @@ namespace App\Tests\Behat;
 
 use App\Api\V1\Dto\MenuDto;
 use App\Api\V1\Service\MenuService;
-use App\Kernel;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\ORM\EntityManagerInterface;

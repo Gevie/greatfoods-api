@@ -1,0 +1,12 @@
+doctrine:
+  dbal:
+    url: '%env(resolve:DATABASE_URL)%'
+    logging: true
+
+monolog:
+    handlers:
+        doctrine:
+            type: stream
+            path: '%kernel.logs_dir%/doctrine.log'
+            level: debug
+            channels: ['doctrine']

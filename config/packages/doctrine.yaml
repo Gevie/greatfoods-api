@@ -1,6 +1,7 @@
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
+        logging: true
 
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)
@@ -25,6 +26,14 @@ doctrine:
             soft_delete:
                 class: App\Filter\Doctrine\ORM\SoftDeleteFilter
                 enabled: true
+
+monolog:
+    handlers:
+        doctrine:
+            type: stream
+            path: '%kernel.logs_dir%/doctrine.log'
+            level: debug
+            channels: ['doctrine']
 
 when@test:
     doctrine:
