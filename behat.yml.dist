@@ -6,3 +6,14 @@ default:
 
     extensions:
         FriendsOfBehat\SymfonyExtension: null
+
+test:
+    suites:
+        default:
+            paths:
+                - "%paths.base%/features"
+            contexts:
+                - App\Behat\Context\ApiMenuContext
+
+    extensions:
+        FriendsOfBehat\SymfonyExtension: ~

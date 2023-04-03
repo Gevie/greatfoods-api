@@ -82,11 +82,6 @@ abstract class ApiContext implements Context
      */
     private function decodeJsonResponse(ResponseInterface $response): array
     {
-        $contentType = $response->getHeaders()['content-type'][0] ?? null;
-        if (strpos($contentType, 'application/json') === false) {
-            return [];
-        }
-
         $decodedResponse = json_decode($response->getContent(), true);
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new RuntimeException('Failed to decode JSON response.');
@@ -146,7 +141,7 @@ abstract class ApiContext implements Context
 
         $this->decodedResponse = $this->decodeJsonResponse($response);
         $this->response = new Response(
-            $$response->getContent(),
+            $response->getContent(),
             $response->getStatusCode(),
             $response->getHeaders()
         );

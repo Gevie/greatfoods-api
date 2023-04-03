@@ -7,7 +7,7 @@ Feature: API Menu
         | 2  | Mains    |                                 | 2     |
     
     Scenario: Get all menus
-        When I send a GET request to "/api/v1/menus"
+        When I send a GET request to "menus"
         Then the response status code should be 200
             And the response contains 2 items
             And response.0.name equals "Starters"
