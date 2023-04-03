@@ -8,6 +8,14 @@ use App\Entity\AbstractEntity;
 use JsonException;
 use RuntimeException;
 
+/**
+ * Trait LoadJsonTrait
+ * 
+ * Used to load seed data from .json files and pass to Fixtures.
+ * 
+ * @package App\Traits\DataFixtures
+ * @author Stephen Speakman <hellospeakman@gmail.com>
+ */
 trait LoadJsonTrait
 {
     /**

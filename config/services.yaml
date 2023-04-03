@@ -24,3 +24,5 @@ services:
     # please note that last definitions always *replace* previous ones
     App\Filter\Doctrine\ORM\SoftDeleteFilter:
         public: true
+
+    Symfony\Contracts\HttpClient\HttpClientInterface: '@Symfony\Component\HttpClient\HttpClient'
