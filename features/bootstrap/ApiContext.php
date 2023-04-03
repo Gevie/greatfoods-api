@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Behat\Context;
 
 use Behat\Behat\Context\Context;
+use InvalidArgumentException;
 use PHPUnit\Framework\Assert;
 use RuntimeException;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -95,6 +96,34 @@ abstract class ApiContext implements Context
     }
 
     /**
+     * Walks through the response path to get the appropriate key value.
+     *
+     * @param string $path The path to obtain (i.e. 0.products.0.name)
+     * 
+     * @return mixed The array value at the path
+     * 
+     * @throws InvalidArgumentException If the path specified is invalid
+     */
+    private function getPath(string $path): mixed
+    {
+        $pathParts = explode('.', $path);
+        $currentPath = $this->decodedResponse;
+
+        foreach ($pathParts as $part) {
+            if (!isset($currentPath[$part])) {
+                throw new InvalidArgumentException(sprintf(
+                    'The path "%s" does not exist in the response',
+                    $path
+                ));
+            }
+
+            $currentPath = $currentPath[$part];
+        }
+
+        return $currentPath;
+    }
+
+    /**
      * Handle the sending of requests and store the response property.
      * 
      * @When I send a :method request to :url
@@ -138,34 +167,51 @@ abstract class ApiContext implements Context
     }
 
     /**
-     * Assert that the response item at index equals expected value.
-     * 
-     * @Then response.:index.:key equals :value
+     * Assert that the response item at path contains a specific number of items.
      *
-     * @param integer $index The index of the array item
-     * @param string $key The key to check
-     * @param int|string $value The value to compare
+     * @Then response.:path contains :count items
+     * 
+     * @param string $path The path to check
+     * @param integer $count The number of items to assert
      * 
      * @return void
      */
-    public function theResponseItemAtEquals(int $index, string $key, int|string $value): void
+    public function theResponseItemContainsItems(string $path, int $count): void
     {
-        Assert::assertEquals($value, $this->decodedResponse[$index][$key]);
+        $responsePath = $this->getPath($path);
+        Assert::assertCount($count, $responsePath);
+    }
+
+    /**
+     * Assert that the response item at path equals expected value.
+     * 
+     * @Then response.:path equals :value
+     *
+     * @param string $path The path to check
+     * @param mixed $value The value to compare
+     * 
+     * @return void
+     */
+    public function theResponseItemAtEquals(string $path, mixed $value): void
+    {
+        $responsePath = $this->getPath($path);
+        Assert::assertEquals($value, $responsePath);
     }
 
     /**
      * Assert that the response item at index is null.
      * 
-     * @Then response.:index.:key is null
+     * @Then response.:path is null
      *
-     * @param integer $index The index of the array item
+     * @param string $path The path to check
      * @param string $key The key to check
      * 
      * @return void
      */
-    public function theResponseItemAtIsNull(int $index, string $key): void
+    public function theResponseItemAtIsNull(string $path): void
     {
-        Assert::assertEquals(null, $this->decodedResponse[$index][$key]);
+        $responsePath = $this->getPath($path);
+        Assert::assertEquals(null, $responsePath);
     }
 
     /**
@@ -177,7 +223,7 @@ abstract class ApiContext implements Context
      * 
      * @return void
      */
-    public function theResponseStatusCouldShouldBe(int $statusCode): void
+    public function theResponseStatusCodeShouldBe(int $statusCode): void
     {
         Assert::assertSame($statusCode, $this->response->getStatusCode());
     }
