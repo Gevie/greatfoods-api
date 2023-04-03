@@ -4,7 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    api_base_url: 'http://localhost:8080/api/v1'
+    api_base_url: 'http://172.19.0.4:80/api/v1'
 
 services:
     # default configuration for services in *this* file
@@ -25,5 +25,3 @@ services:
     # please note that last definitions always *replace* previous ones
     App\Filter\Doctrine\ORM\SoftDeleteFilter:
         public: true
-
-    Symfony\Contracts\HttpClient\HttpClientInterface: '@Symfony\Component\HttpClient\HttpClient'

@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Behat\Context;
+namespace App\Tests\Behat;
 
 use Behat\Behat\Context\Context;
 use InvalidArgumentException;
 use PHPUnit\Framework\Assert;
 use RuntimeException;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\VarDumper\VarDumper;
@@ -34,13 +35,6 @@ abstract class ApiContext implements Context
     ];
 
     /**
-     * The HTTP response
-     *
-     * @var Response
-     */
-    private Response $response;
-
-    /**
      * The decoded HTTP response 
      *
      * @var array
@@ -48,11 +42,17 @@ abstract class ApiContext implements Context
     private array $decodedResponse = [];
 
     /**
+     * The HTTP response
+     *
+     * @var Response
+     */
+    private Response $response;
+
+    /**
      * ApiContext constructor.
      *
      * @param HttpClientInterface $httpClient The HTTP client
      * @param KernelInterface $kernel The Kernel
-     * @param Response $response The HTTP response (populated by iSendARequestTo())
      */
     public function __construct(
         private HttpClientInterface $httpClient,

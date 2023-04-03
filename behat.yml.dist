@@ -2,18 +2,11 @@ default:
     suites:
         default:
             contexts:
-                - App\Tests\Behat\DemoContext
+                - App\Tests\Behat\ApiMenuContext
 
     extensions:
-        FriendsOfBehat\SymfonyExtension: null
-
-test:
-    suites:
-        default:
-            paths:
-                - "%paths.base%/features"
-            contexts:
-                - App\Behat\Context\ApiMenuContext
-
-    extensions:
-        FriendsOfBehat\SymfonyExtension: ~
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: 'config/behat/bootstrap.php'
+            kernel:
+                environment: test
+                debug: true

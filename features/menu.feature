@@ -9,6 +9,7 @@ Feature: API Menu
     Scenario: Get all menus
         When I send a GET request to "menus"
         Then the response status code should be 200
+            And debug response
             And the response contains 2 items
             And response.0.name equals "Starters"
             And response.0.description equals "This is a temporary description"

@@ -2,13 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Behat\Context;
+namespace App\Tests\Behat;
 
 use App\Api\V1\Dto\MenuDto;
 use App\Api\V1\Service\MenuService;
+use App\Kernel;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * Class ApiMenuContext
@@ -27,11 +31,13 @@ class ApiMenuContext extends ApiContext implements Context
      * @param SerializerInterface $serializer The serializer
      */
     public function __construct(
+        private HttpClientInterface $httpClient,
+        private KernelInterface $kernel,
         private EntityManagerInterface $entityManager,
         private MenuService $menuService,
         private SerializerInterface $serializer
     ) {
-        // ...
+        parent::__construct($httpClient, $kernel);
     }
 
     /**
@@ -39,14 +45,19 @@ class ApiMenuContext extends ApiContext implements Context
      * 
      * @Given the following menus exist:
      *
-     * @param array $menus The menus defined in the feature table
+     * @param TableNode $menus The menus defined in the feature table
      * 
      * @return void
      */
-    public function theFollowingMenusExist(array $menus): void
+    public function theFollowingMenusExist(TableNode $menus): void
     {
         foreach ($menus as $menuData) {
-            $menuDto = $this->serializer->deserialize($menuData, MenuDto::class, 'json');
+            $menuDto = $this->serializer->deserialize(
+                json_encode($menuData), 
+                MenuDto::class, 
+                'json'
+            );
+
             $menu = $this->menuService->create($menuDto, false);
 
             $this->entityManager->persist($menu);
