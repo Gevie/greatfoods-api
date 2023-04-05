@@ -1,0 +1,49 @@
+name: Behat Tests
+
+on:
+  push:
+    branches:
+      - master
+      - 'feature/**'
+      - 'hotfix/**'
+      - 'release/**'
+  pull_request:
+    branches:
+      - master
+      - 'feature/**'
+      - 'hotfix/**'
+      - 'release/**'
+
+jobs:
+  behat:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: intl, opcache, pdo, pdo_mysql, zip
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader --no-suggest
+
+      - name: Set up environment variables
+        env:
+          APP_ENV: test
+          APP_SECRET: ${{ secrets.APP_SECRET }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          echo "APP_ENV=${APP_ENV}" >> $GITHUB_ENV
+          echo "APP_SECRET=${APP_SECRET}" >> $GITHUB_ENV
+          echo "DATABASE_URL=${DATABASE_URL}" >> $GITHUB_ENV
+
+      - name: Install MySQL
+        run: sudo apt-get install mysql-client
+      
+      - name: Run behat tests
+        run: ./vendor/bin/behat
