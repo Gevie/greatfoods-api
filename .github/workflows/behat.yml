@@ -41,6 +41,9 @@ jobs:
           echo "APP_ENV=${APP_ENV}" >> $GITHUB_ENV
           echo "APP_SECRET=${APP_SECRET}" >> $GITHUB_ENV
           echo "DATABASE_URL=${DATABASE_URL}" >> $GITHUB_ENV
+          echo "APP_ENV=${APP_ENV}" >> .env.test
+          echo "APP_SECRET=${APP_SECRET}" >> .env.test
+          echo "DATABASE_URL=${DATABASE_URL}" >> .env.test
 
       - name: Install MySQL
         run: sudo apt-get install mysql-client
