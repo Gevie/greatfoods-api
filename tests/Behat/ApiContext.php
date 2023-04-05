@@ -23,7 +23,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  * @package App\Behat\Context
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */
-abstract class ApiContext implements Context
+abstract class ApiContext extends WebClientContext
 {
     private const ALLOWED_HTTP_METHODS = [
         'DELETE',
@@ -48,20 +48,20 @@ abstract class ApiContext implements Context
      */
     private Response $response;
 
-    /**
-     * ApiContext constructor.
-     *
-     * @param HttpClientInterface $httpClient The HTTP client
-     * @param KernelInterface $kernel The Kernel
-     */
-    public function __construct(
-        private HttpClientInterface $httpClient,
-        private KernelInterface $kernel
-    ) {
-        // ...
-    }
+    // /**
+    //  * ApiContext constructor.
+    //  *
+    //  * @param HttpClientInterface $httpClient The HTTP client
+    //  * @param KernelInterface $kernel The Kernel
+    //  */
+    // public function __construct(
 
-    /**
+    //     private KernelInterface $kernel
+    // ) {
+    //     // ...
+    // }
+
+     /**
      * Pretty-prints the JSON response for debugging.
      * 
      * @Then debug response
@@ -134,11 +134,16 @@ abstract class ApiContext implements Context
             throw new RuntimeException(sprintf('The method "%s" is not a valid HTTP method', $method));
         }
 
-        dump(getenv('APP_ENV'));
-        $response = $this->httpClient->request($method, sprintf('%s/%s',
-            $this->kernel->getContainer()->getParameter('api_base_url'),
-            $endpoint
-        ));
+        $client = static::createClient();
+        $client->followRedirect();
+        $client->request(
+            $method, 
+            sprintf('%s/%s', static::$kernel->getContainer()->getParameter('api_base_url'), $endpoint)
+        );
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        dump($backtrace);
+        dump($client->getResponse());
+        die();
 
         $this->decodedResponse = $this->decodeJsonResponse($response);
         $this->response = new Response(

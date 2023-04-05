@@ -30,13 +30,13 @@ class ApiMenuContext extends ApiContext implements Context
      * @param SerializerInterface $serializer The serializer
      */
     public function __construct(
-        private HttpClientInterface $httpClient,
-        private KernelInterface $kernel,
+        // private HttpClientInterface $httpClient,
+        // private KernelInterface $kernel,
         private EntityManagerInterface $entityManager,
         private MenuService $menuService,
         private SerializerInterface $serializer
     ) {
-        parent::__construct($httpClient, $kernel);
+        // parent::__construct($httpClient, $kernel);
     }
 
     /**
