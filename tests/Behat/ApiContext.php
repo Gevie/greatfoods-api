@@ -6,14 +6,11 @@ namespace App\Tests\Behat;
 
 use Behat\Behat\Context\Context;
 use InvalidArgumentException;
-use PHPUnit\Framework\Assert;
 use RuntimeException;
-use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\VarDumper\VarDumper;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * Class ApiContext
@@ -23,7 +20,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  * @package App\Behat\Context
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */
-abstract class ApiContext extends WebClientContext
+abstract class ApiContext implements Context
 {
     private const ALLOWED_HTTP_METHODS = [
         'DELETE',
@@ -48,21 +45,27 @@ abstract class ApiContext extends WebClientContext
      */
     private Response $response;
 
-    // /**
-    //  * ApiContext constructor.
-    //  *
-    //  * @param HttpClientInterface $httpClient The HTTP client
-    //  * @param KernelInterface $kernel The Kernel
-    //  */
-    // public function __construct(
-
-    //     private KernelInterface $kernel
-    // ) {
-    //     // ...
-    // }
+    public function __construct(
+        private KernelBrowser $client,
+        private KernelInterface $kernel
+    ) {
+        // ...
+    }
 
      /**
      * Pretty-prints the JSON response for debugging.
+     * 
+     * @Then debug formatted response
+     *
+     * @return void
+     */
+    public function debugFormattedResponse(): void
+    {
+        VarDumper::dump($this->decodedResponse);
+    }
+
+    /**
+     * Prints the raw JSON response for debugging.
      * 
      * @Then debug response
      *
@@ -70,17 +73,17 @@ abstract class ApiContext extends WebClientContext
      */
     public function debugResponse(): void
     {
-        VarDumper::dump($this->decodedResponse);
+        print($this->response->getContent());
     }
 
     /**
      * Decodes the response content into an array if possible.
      *
-     * @param ResponseInterface $response The HTTP response
+     * @param Response $response The HTTP response
      * 
      * @return array The decoded response or an empty array
      */
-    private function decodeJsonResponse(ResponseInterface $response): array
+    private function decodeJsonResponse(Response $response): array
     {
         $decodedResponse = json_decode($response->getContent(), true);
         if (json_last_error() !== JSON_ERROR_NONE) {
@@ -134,23 +137,13 @@ abstract class ApiContext extends WebClientContext
             throw new RuntimeException(sprintf('The method "%s" is not a valid HTTP method', $method));
         }
 
-        $client = static::createClient();
-        $client->followRedirect();
-        $client->request(
-            $method, 
-            sprintf('%s/%s', static::$kernel->getContainer()->getParameter('api_base_url'), $endpoint)
-        );
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-        dump($backtrace);
-        dump($client->getResponse());
-        die();
-
-        $this->decodedResponse = $this->decodeJsonResponse($response);
-        $this->response = new Response(
-            $response->getContent(),
-            $response->getStatusCode(),
-            $response->getHeaders()
-        );
+        $this->client->followRedirects();
+        $this->client->request($method, sprintf('%s/%s', 
+            $this->kernel->getContainer()->getParameter('api_base_url'), $endpoint
+        ));
+        
+        $this->response = $this->client->getResponse();
+        $this->decodedResponse = $this->decodeJsonResponse($this->response);
     }
 
     /**
@@ -164,7 +157,7 @@ abstract class ApiContext extends WebClientContext
      */
     public function theResponseContainsItems(int $count): void
     {
-        Assert::assertCount($count, $this->decodedResponse);
+        assert($count === count($this->decodedResponse));
     }
 
     /**
@@ -180,7 +173,8 @@ abstract class ApiContext extends WebClientContext
     public function theResponseItemContainsItems(string $path, int $count): void
     {
         $responsePath = $this->getPath($path);
-        Assert::assertCount($count, $responsePath);
+
+        assert($count === count($responsePath));
     }
 
     /**
@@ -196,7 +190,42 @@ abstract class ApiContext extends WebClientContext
     public function theResponseItemAtEquals(string $path, mixed $value): void
     {
         $responsePath = $this->getPath($path);
-        Assert::assertEquals($value, $responsePath);
+
+        assert($value === $responsePath);
+    }
+
+    /**
+     * Assert that the response item at path equals expected integer value.
+     * 
+     * @Then response.:path integer equals :value
+     *
+     * @param string $path The path to check
+     * @param integer $value The value to compare
+     * 
+     * @return void
+     */
+    public function theResponseItemAtEqualsInteger(string $path, int $value): void
+    {
+        $responsePath = $this->getPath($path);
+
+        assert($value === $responsePath);
+    }
+
+    /**
+     * Assert that the response item at path equals expected string value.
+     * 
+     * @Then response.:path string equals :value
+     *
+     * @param string $path The path to check
+     * @param string $value The value to compare
+     * 
+     * @return void
+     */
+    public function theResponseItemAtEqualsString(string $path, string $value): void
+    {
+        $responsePath = $this->getPath($path);
+
+        assert($value === $responsePath);
     }
 
     /**
@@ -212,7 +241,8 @@ abstract class ApiContext extends WebClientContext
     public function theResponseItemAtIsNull(string $path): void
     {
         $responsePath = $this->getPath($path);
-        Assert::assertEquals(null, $responsePath);
+
+        assert("" === (string) $responsePath);
     }
 
     /**
@@ -222,10 +252,10 @@ abstract class ApiContext extends WebClientContext
      *
      * @param integer $statusCode The status code to expect
      * 
-     * @return void
+     * @return bool
      */
     public function theResponseStatusCodeShouldBe(int $statusCode): void
     {
-        Assert::assertSame($statusCode, $this->response->getStatusCode());
+        assert($statusCode === $this->response->getStatusCode());
     }
 }

@@ -10,8 +10,8 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerInterface;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * Class ApiMenuContext
@@ -26,17 +26,18 @@ class ApiMenuContext extends ApiContext implements Context
     /**
      * ApiMenuContext contructor.
      *
+     * @param EntityManagerInterface $entityManager The entity manager interface
      * @param MenuService $menuService The menu service
      * @param SerializerInterface $serializer The serializer
      */
     public function __construct(
-        // private HttpClientInterface $httpClient,
-        // private KernelInterface $kernel,
+        private KernelBrowser $client,
+        private KernelInterface $kernel,
         private EntityManagerInterface $entityManager,
         private MenuService $menuService,
         private SerializerInterface $serializer
     ) {
-        // parent::__construct($httpClient, $kernel);
+        parent::__construct($this->client, $this->kernel);
     }
 
     /**
@@ -58,7 +59,6 @@ class ApiMenuContext extends ApiContext implements Context
             );
 
             $menu = $this->menuService->create($menuDto, false);
-
             $this->entityManager->persist($menu);
         }
 
