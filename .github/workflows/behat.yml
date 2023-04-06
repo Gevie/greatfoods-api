@@ -22,11 +22,23 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-          MYSQL_DATABASE: greatfoods_test
+        ports:
+          - 3306:3306
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Export MYSQL_PWD
+        run: |
+          export MYSQL_PWD=${MYSQL_ROOT_PASSWORD}
+
+      - name: Start MySQL service
+        run: sudo service mysql start
+
+      - name: Create Database
+        run: |
+          mysql -u root -h localhost -e "CREATE DATABASE greatfoods_test;"
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -34,11 +46,6 @@ jobs:
           php-version: '8.2'
           extensions: intl, opcache, pdo, pdo_mysql, zip
           coverage: none
-
-      - name: Create Database
-        run: |
-          export MYSQL_PWD=${MYSQL_ROOT_PASSWORD}
-          mysql -u root -h localhost -e "CREATE DATABASE greatfoods_test;"
 
       - name: Install dependencies
         run: composer install --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader --no-suggest
