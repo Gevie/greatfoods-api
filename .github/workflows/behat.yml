@@ -37,7 +37,8 @@ jobs:
 
       - name: Create Database
         run: |
-           mysql -u root -h localhost -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE DATABASE greatfoods_test;"
+          export MYSQL_PWD=${MYSQL_ROOT_PASSWORD}
+          mysql -u root -h localhost -e "CREATE DATABASE greatfoods_test;"
 
       - name: Install dependencies
         run: composer install --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader --no-suggest
