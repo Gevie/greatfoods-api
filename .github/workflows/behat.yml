@@ -17,6 +17,12 @@ on:
 jobs:
   behat:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: greatfoods_test
 
     steps:
       - name: Checkout code
@@ -28,6 +34,10 @@ jobs:
           php-version: '8.2'
           extensions: intl, opcache, pdo, pdo_mysql, zip
           coverage: none
+
+      - name: Create Database
+        run: |
+           mysql -u root -h localhost -p${{ secrets.MYSQL_ROOT_PASSWORD }} -e "CREATE DATABASE greatfoods_test;"
 
       - name: Install dependencies
         run: composer install --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader --no-suggest

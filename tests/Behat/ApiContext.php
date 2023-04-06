@@ -45,6 +45,12 @@ abstract class ApiContext implements Context
      */
     private Response $response;
 
+    /**
+     * ApiContext constructor.
+     *
+     * @param KernelBrowser $client The Kernel Browser (HTTP Client)
+     * @param KernelInterface $kernel The Kernel
+     */
     public function __construct(
         private KernelBrowser $client,
         private KernelInterface $kernel
@@ -151,7 +157,7 @@ abstract class ApiContext implements Context
      * 
      * @Then the response contains :count items
      *
-     * @param integer $count The number of items to assert
+     * @param int $count The number of items to assert
      * 
      * @return void
      */
@@ -166,7 +172,7 @@ abstract class ApiContext implements Context
      * @Then response.:path contains :count items
      * 
      * @param string $path The path to check
-     * @param integer $count The number of items to assert
+     * @param int $count The number of items to assert
      * 
      * @return void
      */
@@ -200,7 +206,7 @@ abstract class ApiContext implements Context
      * @Then response.:path integer equals :value
      *
      * @param string $path The path to check
-     * @param integer $value The value to compare
+     * @param int $value The value to compare
      * 
      * @return void
      */
