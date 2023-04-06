@@ -21,8 +21,8 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: false
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_PASSWORD: ""
           MYSQL_DATABASE: greatfoods_test
         ports:
           - 3306/tcp
@@ -31,10 +31,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Export MYSQL_PWD
-        run: |
-          export MYSQL_PWD=${MYSQL_ROOT_PASSWORD}
 
       - name: Start mysql service
         run: sudo systemctl start mysql.service
