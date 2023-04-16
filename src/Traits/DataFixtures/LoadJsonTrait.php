@@ -27,12 +27,13 @@ trait LoadJsonTrait
      */
     protected function loadFromJson(string $path): array
     {
-        $json = file_get_contents($path);
-        if (! $json) {
+        if (! file_exists($path)) {
             throw new RuntimeException(
-                sprintf('Could not open the JSON file at path "%s".', $path)
+                sprintf('Could not find the JSON file at path "%s".', $path)
             );
         }
+
+        $json = (string) file_get_contents($path);
 
         try {
             /** @var AbstractEntity[] */

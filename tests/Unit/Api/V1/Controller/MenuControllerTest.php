@@ -504,9 +504,9 @@ class MenuControllerTest extends KernelTestCase
     public static function menusDataProvider(): array
     {
         $menus = [
-            ['name' => 'Starters', 'The starters description', 'order' => 1],
-            ['name' => 'Mains', 'The mains description', 'order' => 2],
-            ['name' => 'Drinks', 'The drinks description', 'order' => 3]
+            ['name' => 'Starters', 'description' => 'The starters description', 'order' => 1],
+            ['name' => 'Mains', 'description' => 'The mains description', 'order' => 2],
+            ['name' => 'Drinks', 'description' => 'The drinks description', 'order' => 3]
         ];
 
         return [
