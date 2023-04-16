@@ -27,19 +27,19 @@ class MenuSerializerTest extends TestCase
     /**
      * The serializer.
      *
-     * @var SerializerInterface|MockObject
+     * @var SerializerInterface|MockObject|null
      */
-    private SerializerInterface|MockObject $serializer;
+    private SerializerInterface|MockObject|null $serializer;
 
     /**
      * The menu serializer.
      *
-     * @var MenuSerializer
+     * @var MenuSerializer|null
      */
-    private MenuSerializer $menuSerializer;
+    private MenuSerializer|null $menuSerializer;
 
     /**
-     * Set up the PHP Unit test.
+     * Executed before each test case is run.
      *
      * @return void
      */
@@ -47,6 +47,19 @@ class MenuSerializerTest extends TestCase
     {
         $this->serializer = $this->createMock(SerializerInterface::class);
         $this->menuSerializer = new MenuSerializer($this->serializer);
+    }
+
+    /**
+     * Executed after each test case is run.
+     *
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        $this->serializer = null;
+        $this->menuSerializer = null;
+
+        parent::tearDown();
     }
 
     /**
