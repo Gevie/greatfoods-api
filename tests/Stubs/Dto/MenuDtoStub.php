@@ -9,6 +9,8 @@ use App\Api\V1\Dto\MenuDto;
 /**
  * Class MenuDtoStub
  * 
+ * Provides a stub for creating MenuDto objects.
+ * 
  * @package App\Tests\Stubs\Dto
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */
@@ -28,7 +30,7 @@ final class MenuDtoStub
      *
      * @param array $data The data to override
      * 
-     * @return Menu The menu
+     * @return MenuDto The menu
      */
     public static function create(array $data = []): MenuDto
     {

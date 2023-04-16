@@ -9,10 +9,12 @@ use App\Api\V1\Entity\Menu;
 /**
  * Class MenuStub
  * 
+ * Provides a stub for creating Menu objects.
+ * 
  * @package App\Tests\Stubs\Entity
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */
-final readonly class MenuStub
+final class MenuStub
 {
     /**
      * The default values 

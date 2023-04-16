@@ -15,6 +15,8 @@ use PHPUnit\Framework\TestCase;
 /**
  * Class MenuSerializerTest
  * 
+ * Provides unit tests for the API v1 MenuSerializer.
+ * 
  * @package App\Tests\Unit\Api\V1\Serializer
  * @author Stephen Speakman <hellospeakman@gmail.com>
  * 

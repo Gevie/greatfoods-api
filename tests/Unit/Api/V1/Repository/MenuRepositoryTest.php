@@ -15,6 +15,8 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 /**
  * Class MenuRepositoryTest
  * 
+ * Provides unit tests for the API v1 MenuRepository.
+ * 
  * @package App\Tests\Unit\Api\V1\Repository
  * @author Stephen Speakman <hellospeakman@gmail.com>
  * 
@@ -57,9 +59,9 @@ class MenuRepositoryTest extends KernelTestCase
         $this->registry = $this->createMock(ManagerRegistry::class);
 
         $this->entityManager->expects($this->once())
-        ->method('getClassMetadata')
-        ->with(Menu::class)
-        ->willReturn($this->classMetadata);
+            ->method('getClassMetadata')
+            ->with(Menu::class)
+            ->willReturn($this->classMetadata);
 
         $this->registry->expects($this->once())
             ->method('getManagerForClass')

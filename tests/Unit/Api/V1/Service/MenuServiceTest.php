@@ -15,6 +15,8 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 /**
  * Class MenuServiceTest
  * 
+ * Provides unit tests for the API v1 MenuService.
+ * 
  * @package App\Tests\Unit\Api\V1\Service
  * @author Stephen Speakman <hellospeakman@gmail.com>
  * 

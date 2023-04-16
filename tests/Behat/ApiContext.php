@@ -100,6 +100,18 @@ abstract class ApiContext implements Context
     }
 
     /**
+     * Gets the decoded response property.
+     * 
+     * This is helpful for testing since this class is an abstract class.
+     *
+     * @return array The decoded response
+     */
+    public function getDecodedResponse(): array
+    {
+        return $this->decodedResponse;
+    }
+
+    /**
      * Walks through the response path to get the appropriate key value.
      *
      * @param string $path The path to obtain (i.e. 0.products.0.name)

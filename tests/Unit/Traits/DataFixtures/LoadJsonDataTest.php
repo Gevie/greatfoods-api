@@ -11,6 +11,8 @@ use RuntimeException;
 /**
  * Class LoadJsonTraitTest
  * 
+ * Provides unit tests for the LoadJsonData data fixture trait.
+ * 
  * @package App\Tests\Traits\DataFixtures
  * @author Stephen Speakman <hellospeakman@gmail.com>
  * 

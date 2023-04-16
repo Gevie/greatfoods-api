@@ -12,6 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 /**
  * Class SoftDeleteFilterTest
  * 
+ * Provides unit tests for the Doctrine ORM SoftDeleteFilter.
+ * 
  * @package App\Tests\Unit\Filter\Doctrine\ORM
  * @author Stephen Speakman <hellospeakman@gmail.com>
  * 

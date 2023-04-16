@@ -26,6 +26,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * Class MenuControllerTest
  * 
+ * Provides unit tests for the API v1 MenuController.
+ * 
  * @package App\Tests\Unit\Api\V1\Controller
  * @author Stephen Speakman <hellospeakman@gmail.com>
  * 

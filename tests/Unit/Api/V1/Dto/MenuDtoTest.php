@@ -12,6 +12,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * Class MenuDtoTest
  * 
+ * Provides unit tests for the API v1 MenuDto object.
+ * 
  * @package App\Tests\Unit\Api\V1\Dto
  * @author Stephen Speakman <hellospeakman@gmail.com>
  * 
