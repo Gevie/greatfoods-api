@@ -31,10 +31,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # - name: Create Database
-      #   run: |
-      #     mysql -uroot -h 127.0.0.1 --port 33306 -psecret -e "CREATE DATABASE greatfoods_test;"
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -64,13 +60,5 @@ jobs:
       - name: Create metadata directory
         run: mkdir -p config/serializer/v1
 
-      # - name: Run Migration
-      #   run: |
-      #     composer require --dev symfony/orm-pack
-      #     php bin/console doctrine:schema:update --force || echo "No migrations found or schema update failed"
-      #     php bin/console doctrine:migrations:migrate || echo "No migrations found or migration failed"
-      #   env:
-      #     DATABASE_URL: mysql://root:secret@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/greatfoods?serverVersion=8.0
-      
       - name: Run behat tests
         run: ./vendor/bin/behat
