@@ -57,13 +57,13 @@ class MenuController extends ApiController
 
         $errors = $this->validateDto($menuDto);
         if ($errors) {
-            return $this->json(['errors' => $errors], 400);
+            return new JsonResponse(['errors' => $errors], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         $menu = $this->menuService->create($menuDto);
         $response = $this->serializer->serialize($menu, MenuSerializer::class);
 
-        return $this->json($response, JsonResponse::HTTP_CREATED);
+        return new JsonResponse(json_decode($response), JsonResponse::HTTP_CREATED);
     }
 
     /**
@@ -83,7 +83,7 @@ class MenuController extends ApiController
 
         $this->menuService->delete($menu);
 
-        return $this->json(['message' => 'Menu item deleted'], JsonResponse::HTTP_OK);
+        return new JsonResponse(['message' => 'Menu item deleted'], JsonResponse::HTTP_OK);
     }
 
     /**
@@ -117,7 +117,7 @@ class MenuController extends ApiController
 
         $response = $this->serializer->serialize($menu, MenuSerializer::class);
 
-        return $this->json($response, JsonResponse::HTTP_OK);
+        return new JsonResponse(json_decode($response), JsonResponse::HTTP_OK);
     }
 
     /**
@@ -140,11 +140,12 @@ class MenuController extends ApiController
         $menuDto = $this->serializer->deserialize($request->getContent(), MenuDto::class, 'json');
         $errors = $this->validateDto($menuDto);
         if ($errors) {
-            return $this->json(['errors' => $errors], JsonResponse::HTTP_BAD_REQUEST);
+            return new JsonResponse(['errors' => $errors], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         $menu = $this->menuService->update($menu, $menuDto);
 
-        return $this->json($menu, JsonResponse::HTTP_OK);
+        $serializedMenu = $this->serializer->serialize($menu, 'json');
+        return new JsonResponse(json_decode($serializedMenu), JsonResponse::HTTP_OK);
     }
 }
