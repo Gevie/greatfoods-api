@@ -1,4 +1,4 @@
-name: Behat Tests
+name: Run Tests
 
 on:
   push:
@@ -15,7 +15,7 @@ on:
       - 'release/**'
 
 jobs:
-  behat:
+  tests:
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -62,3 +62,6 @@ jobs:
 
       - name: Run behat tests
         run: ./vendor/bin/behat
+
+      - name: Run phpunit tests
+        run: ./vendor/bin/phpunit
