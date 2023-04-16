@@ -21,8 +21,7 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-          MYSQL_PASSWORD: ""
+          MYSQL_PASSWORD: password
           MYSQL_DATABASE: greatfoods_test
         ports:
           - 3306/tcp
@@ -32,12 +31,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Start mysql service
-        run: sudo systemctl start mysql.service
-
       - name: Create Database
         run: |
-          mysql -u root -h localhost -e "CREATE DATABASE greatfoods_test;"
+          mysql -uroot -h 127.0.0.1 --port 3306 -ppassword -e "CREATE DATABASE greatfoods_test;" 2>/dev/null
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
