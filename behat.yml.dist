@@ -6,7 +6,7 @@ default:
 
     extensions:               
         FriendsOfBehat\SymfonyExtension:
-            bootstrap: tests/bootstrap.php
+            bootstrap: config/behat/bootstrap.php
             kernel:
                 environment: test
                 debug: true
