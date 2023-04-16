@@ -34,7 +34,7 @@ jobs:
 
       - name: Create Database
         run: |
-          mysql -uroot -h 127.0.0.1 --port 3306 -ppassword -e "CREATE DATABASE greatfoods_test;" 2>/dev/null
+          mysql -u root -h 127.0.0.1 --port 3306 -ppassword -e "CREATE DATABASE greatfoods_test;" 2>/dev/null
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
