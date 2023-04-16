@@ -21,20 +21,21 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-          MYSQL_PASSWORD: password
+          MYSQL_ALLOW_EMPTY_PASSWORD: false
+          MYSQL_ROOT_PASSWORD: secret
           MYSQL_DATABASE: greatfoods_test
         ports:
           - 3306/tcp
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
+      strategy:
+        fail-fast: false
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Create Database
-        run: |
-          mysql -u root -h 127.0.0.1 --port 3306 -ppassword -e "CREATE DATABASE greatfoods_test;" 2>/dev/null
+      # - name: Create Database
+      #   run: |
+      #     mysql -uroot -h 127.0.0.1 --port 33306 -psecret -e "CREATE DATABASE greatfoods_test;"
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -62,11 +63,16 @@ jobs:
           echo "APP_SECRET=${APP_SECRET}" >> .env.test
           echo "DATABASE_URL=${DATABASE_URL}" >> .env.test
 
-      - name: Install MySQL
-        run: sudo apt-get install mysql-client
-
       - name: Create metadata directory
         run: mkdir -p config/serializer/v1
+
+      - name: Run Migration
+        run: |
+          composer require --dev symfony/orm-pack
+          php bin/console doctrine:schema:update --force || echo "No migrations found or schema update failed"
+          php bin/console doctrine:migrations:migrate || echo "No migrations found or migration failed"
+        env:
+          DATABASE_URL: mysql://root:secret@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/greatfoods?serverVersion=8.0
       
       - name: Run behat tests
         run: ./vendor/bin/behat
