@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Behat;
 
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\PyStringNode;
 use InvalidArgumentException;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -143,22 +144,34 @@ abstract class ApiContext implements Context
      * Handle the sending of requests and store the response property.
      * 
      * @When I send a :method request to :url
+     * @When I send a :method request to :url with:
      *
      * @param string $method The HTTP request method
      * @param string $url The URL to request
+     * @param PyStringNode|null $data The json data to send (optional)
      * 
      * @return void
      */
-    public function iSendARequestTo(string $method, string $endpoint): void
+    public function iSendARequestTo(string $method, string $endpoint, ?PyStringNode $data = null): void
     {
         if (! in_array($method, self::ALLOWED_HTTP_METHODS)) {
             throw new RuntimeException(sprintf('The method "%s" is not a valid HTTP method', $method));
         }
 
+        $options = [];
+        if ($data !== null) {
+            $options = json_decode($data->getRaw(), true, 512, JSON_THROW_ON_ERROR);
+        }
+
         $this->client->followRedirects();
-        $this->client->request($method, sprintf('%s/%s', 
-            $this->kernel->getContainer()->getParameter('api_base_url'), $endpoint
-        ));
+        $this->client->request(
+            $method, 
+            sprintf('%s/%s', $this->kernel->getContainer()->getParameter('api_base_url'), $endpoint), 
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($options)
+        );
         
         $this->response = $this->client->getResponse();
         $this->decodedResponse = $this->decodeJsonResponse($this->response);

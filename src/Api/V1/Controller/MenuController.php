@@ -49,7 +49,7 @@ class MenuController extends ApiController
      *
      * @return JsonResponse The JSON response containing the newly created menu entity
      */
-    #[Route('/', name: 'create', methods: ['POST'])]
+    #[Route(null, name: 'create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
         /** @var MenuDto $menuDto */
@@ -61,7 +61,14 @@ class MenuController extends ApiController
         }
 
         $menu = $this->menuService->create($menuDto);
-        $response = $this->serializer->serialize($menu, MenuSerializer::class);
+        dump($menu);
+        try {
+            $response = $this->serializer->serialize($menu, MenuSerializer::class);
+            dump($response);
+        } catch (\RuntimeException $e) {
+            dump($e->getMessage());
+            dump($e->getTrace());
+        }
 
         return new JsonResponse(json_decode($response), JsonResponse::HTTP_CREATED);
     }
@@ -111,11 +118,15 @@ class MenuController extends ApiController
     public function show(int $menuId): JsonResponse
     {
         $menu = $this->menuRepository->find($menuId);
+
         if (! $menu) {
-            throw $this->createNotFoundException(sprintf('Menu item "%d" not found', $menuId));
+            return new JsonResponse(
+                ['error' => sprintf('Menu item "%d" not found', $menuId)],
+                JsonResponse::HTTP_NOT_FOUND
+            );
         }
 
-        $response = $this->serializer->serialize($menu, MenuSerializer::class);
+        $response = $this->serializer->serialize($menu, 'json');
 
         return new JsonResponse(json_decode($response), JsonResponse::HTTP_OK);
     }

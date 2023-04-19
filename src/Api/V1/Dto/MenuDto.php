@@ -46,7 +46,6 @@ class MenuDto implements DtoInterface
      */
     #[Serializer\Type('integer')]
     #[Assert\PositiveOrZero(message: 'Order must be a positive integer or zero')]
-    #[Assert\Unique(message: 'Order must be unique and cannot be shared with another menu entry')]
     #[Serializer\Since('1.0')]
     public ?int $order = null;
 

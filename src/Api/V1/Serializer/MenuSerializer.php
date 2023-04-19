@@ -56,10 +56,13 @@ class MenuSerializer
      */
     public function serialize(Menu $menu): string
     {
+        dump("DID WE HIT THE SERIALIZER?");
         $context = SerializationContext::create()
             ->setSerializeNull(true)
             ->setGroups(['menu'])
             ->setVersion('1.0');
+
+        dump($context);
 
         return $this->serializer->serialize($menu, 'json', $context);
     }
