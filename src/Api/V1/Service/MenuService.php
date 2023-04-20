@@ -64,7 +64,7 @@ class MenuService
     public function delete(Menu $menu): void
     {
         $menu->delete();
-        $this->menuRepository->save($menu);
+        $this->menuRepository->save($menu, true);
     }
 
     /**

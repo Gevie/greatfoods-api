@@ -16,6 +16,9 @@ use JMS\Serializer\SerializerInterface;
  *
  * @package App\Api\V1\Serializer
  * @author Stephen Speakman <hellospeakman@gmail.com>
+ *
+ * @Serializer\ExclusionPolicy("all")
+ * @Serializer\SerializedName("menu")
  */
 class MenuSerializer
 {
@@ -56,13 +59,10 @@ class MenuSerializer
      */
     public function serialize(Menu $menu): string
     {
-        dump("DID WE HIT THE SERIALIZER?");
         $context = SerializationContext::create()
             ->setSerializeNull(true)
             ->setGroups(['menu'])
             ->setVersion('1.0');
-
-        dump($context);
 
         return $this->serializer->serialize($menu, 'json', $context);
     }

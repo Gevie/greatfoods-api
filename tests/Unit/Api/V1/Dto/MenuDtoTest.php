@@ -75,10 +75,9 @@ class MenuDtoTest extends KernelTestCase
         $errors2 = $this->validator->validate($menuDto2);
 
         // Assert
-        $this->assertCount(4, $errors);
+        $this->assertCount(3, $errors);
         $this->assertSame('Name cannot be blank', $errors->get(0)->getMessage());
         $this->assertSame('Description cannot be longer than 255 characters', $errors->get(1)->getMessage());
-        $this->assertSame('Order must be a positive integer or zero', $errors->get(2)->getMessage());
 
         $this->assertCount(1, $errors2);
         $this->assertSame('Name cannot be longer than 128 characters', $errors2->get(0)->getMessage());

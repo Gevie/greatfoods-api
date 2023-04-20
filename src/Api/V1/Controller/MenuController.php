@@ -6,8 +6,8 @@ namespace App\Api\V1\Controller;
 
 use App\Api\V1\Dto\MenuDto;
 use App\Api\V1\Repository\MenuRepository;
-use App\Api\V1\Serializer\MenuSerializer;
 use App\Api\V1\Service\MenuService;
+use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +39,7 @@ class MenuController extends ApiController
         protected MenuRepository $menuRepository,
         protected MenuService $menuService
     ) {
-        parent::__construct($validator);
+        parent::__construct($validator, $serializer);
     }
 
     /**
@@ -61,14 +61,9 @@ class MenuController extends ApiController
         }
 
         $menu = $this->menuService->create($menuDto);
-        dump($menu);
-        try {
-            $response = $this->serializer->serialize($menu, MenuSerializer::class);
-            dump($response);
-        } catch (\RuntimeException $e) {
-            dump($e->getMessage());
-            dump($e->getTrace());
-        }
+
+        $context = SerializationContext::create()->setGroups(['menu']);
+        $response = $this->serializer->serialize($menu, 'json', $context);
 
         return new JsonResponse(json_decode($response), JsonResponse::HTTP_CREATED);
     }
@@ -85,12 +80,15 @@ class MenuController extends ApiController
     {
         $menu = $this->menuRepository->find($menuId);
         if (! $menu) {
-            throw $this->createNotFoundException(sprintf('Menu item "%d" not found', $menuId));
+            return $this->entityNotFoundResponse('Menu', $menuId);
         }
 
         $this->menuService->delete($menu);
 
-        return new JsonResponse(['message' => 'Menu item deleted'], JsonResponse::HTTP_OK);
+        return new JsonResponse(
+            ['message' => sprintf('Menu item "%s" deleted', $menuId)],
+            JsonResponse::HTTP_OK
+        );
     }
 
     /**
@@ -118,12 +116,8 @@ class MenuController extends ApiController
     public function show(int $menuId): JsonResponse
     {
         $menu = $this->menuRepository->find($menuId);
-
         if (! $menu) {
-            return new JsonResponse(
-                ['error' => sprintf('Menu item "%d" not found', $menuId)],
-                JsonResponse::HTTP_NOT_FOUND
-            );
+            return $this->entityNotFoundResponse('Menu', $menuId);
         }
 
         $response = $this->serializer->serialize($menu, 'json');
@@ -139,24 +133,29 @@ class MenuController extends ApiController
      *
      * @return JsonResponse The JSON response containing the newly updated menu entity
      */
-    #[Route('/{menuId}', name: 'update', methods: ['PUT'])]
+    #[Route('/{menuId}', name: 'update', methods: ['PATCH', 'PUT'])]
     public function update(Request $request, int $menuId): JsonResponse
     {
         $menu = $this->menuRepository->find($menuId);
         if (! $menu) {
-            throw $this->createNotFoundException(sprintf('Menu item "%d" not found', $menuId));
+            return $this->entityNotFoundResponse('Menu', $menuId);
         }
 
+        $menuData = $this->mergeEntityAndPayload($menu, $request);
         /** @var MenuDto $menuDto */
-        $menuDto = $this->serializer->deserialize($request->getContent(), MenuDto::class, 'json');
+        $menuDto = $this->serializer->deserialize($menuData, MenuDto::class, 'json');
+
         $errors = $this->validateDto($menuDto);
         if ($errors) {
             return new JsonResponse(['errors' => $errors], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        $menu = $this->menuService->update($menu, $menuDto);
+        $serializedMenu = $this->serializer->serialize(
+            $this->menuService->update($menu, $menuDto),
+            'json',
+            $this->getContext(true, ['menu'])
+        );
 
-        $serializedMenu = $this->serializer->serialize($menu, 'json');
         return new JsonResponse(json_decode($serializedMenu), JsonResponse::HTTP_OK);
     }
 }

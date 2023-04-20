@@ -94,7 +94,7 @@ abstract class ApiContext implements Context
     {
         $decodedResponse = json_decode($response->getContent(), true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new RuntimeException('Failed to decode JSON response.');
+            throw new RuntimeException(sprintf('Failed to decode JSON response, error: "%s".', json_last_error_msg()));
         }
 
         return $decodedResponse;
@@ -172,7 +172,7 @@ abstract class ApiContext implements Context
             ['CONTENT_TYPE' => 'application/json'],
             json_encode($options)
         );
-        
+
         $this->response = $this->client->getResponse();
         $this->decodedResponse = $this->decodeJsonResponse($this->response);
     }
@@ -189,6 +189,34 @@ abstract class ApiContext implements Context
     public function theResponseContainsItems(int $count): void
     {
         assert($count === count($this->decodedResponse));
+    }
+
+    /**
+     * Assert that the response does not contain a specific property.
+     * 
+     * @Then response does not have property :property
+     *
+     * @param string $property The property to check
+     * 
+     * @return void
+     */
+    public function theResponseDoesNotHaveProperty(string $property): void
+    {
+        assert(false === isset($this->decodedResponse[$property]));
+    }
+
+    /**
+     * Assert that the response contains a specific property.
+     * 
+     * @Then response has property :property
+     *
+     * @param string $property The property to check
+     * 
+     * @return void
+     */
+    public function theResponseHasProperty(string $property): void
+    {
+        assert(true === isset($this->decodedResponse[$property]));
     }
 
     /**

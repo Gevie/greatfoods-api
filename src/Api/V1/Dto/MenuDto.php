@@ -19,6 +19,43 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MenuDto implements DtoInterface
 {
     /**
+     * The unique identifier of the menu.
+     *
+     * @var integer|null
+     */
+    #[Serializer\Type('integer')]
+    #[Assert\Positive(message: 'ID must be a positive integer')]
+    #[Serializer\Since('1.0')]
+    public ?int $id = null;
+
+    /**
+     * The date and time when the menu was created.
+     *
+     * @var \DateTime|null
+     */
+    #[Serializer\Type('DateTimeImmutable<"Y-m-d H:i:s">')]
+    #[Serializer\Since('1.0')]
+    public ?\DateTimeInterface $created = null;
+
+    /**
+     * The date and time when the menu was last modified.
+     *
+     * @var \DateTime|null
+     */
+    #[Serializer\Type('DateTimeImmutable<"Y-m-d H:i:s">')]
+    #[Serializer\Since('1.0')]
+    public ?\DateTimeInterface $modified = null;
+
+    /**
+     * The date and time when the menu was deleted.
+     *
+     * @var \DateTime|null
+     */
+    #[Serializer\Type('DateTimeImmutable<"Y-m-d H:i:s">')]
+    #[Serializer\Since('1.0')]
+    public ?\DateTimeInterface $deleted = null;
+
+    /**
      * The name of the menu.
      *
      * @var string

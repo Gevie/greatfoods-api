@@ -30,7 +30,8 @@ class Menu extends AbstractMenu
      *
      * @var DateTimeInterface
      */
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: false, options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: false, options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[Serializer\Groups(['menu'])]
     private ?DateTimeInterface $created = null;
 
     /**
@@ -38,7 +39,7 @@ class Menu extends AbstractMenu
      *
      * @var DateTimeInterface|null
      */
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?DateTimeInterface $deleted = null;
 
     /**
@@ -58,6 +59,7 @@ class Menu extends AbstractMenu
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Serializer\Groups(['menu'])]
     protected ?int $id = null;
 
     /**
@@ -65,7 +67,8 @@ class Menu extends AbstractMenu
      *
      * @var DateTimeInterface|null
      */
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[Serializer\Groups(['menu'])]
     private ?DateTimeInterface $modified = null;
 
     /**
@@ -84,6 +87,7 @@ class Menu extends AbstractMenu
      */
     #[ORM\Column(name: '`order`', type: Types::SMALLINT, nullable: true, options: ['unsigned' => true])]
     #[Serializer\Groups(['menu'])]
+    #[Serializer\SerializedName('order')]
     private ?int $order = null;
 
     /**
