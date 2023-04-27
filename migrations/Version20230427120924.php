@@ -8,28 +8,28 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * Add 'menus' table with fields for name, description, order, and timestamps.
+ * Add 'users' table with fields for email, password, roles and timestamps
  * 
- * Up:
- *  - CREATE menus
+ * Up: 
+ *  - CREATE users
  * 
  * Down:
- *  - DROP menus
+ *  - DROP users
  */
-final class Version20230401124347 extends AbstractMigration
+final class Version20230427120924 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Add menus table with fields for name, description, order, and timestamps.';
+        return 'Add users table with fields for email, password, roles and timestamps';
     }
 
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE TABLE menus (
+        $this->addSql('CREATE TABLE users (
             id INT AUTO_INCREMENT NOT NULL,
-            name VARCHAR(128) NOT NULL,
-            description VARCHAR(255) DEFAULT NULL,
-            `order` SMALLINT UNSIGNED DEFAULT NULL,
+            email VARCHAR(180) NOT NULL,
+            password VARCHAR(255) NOT NULL,
+            roles MEDIUMTEXT NOT NULL,
             created DATETIME NOT NULL,
             modified DATETIME DEFAULT NULL,
             deleted DATETIME DEFAULT NULL,
@@ -39,6 +39,6 @@ final class Version20230401124347 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('DROP TABLE menus');
+        $this->addSql('DROP TABLE users');
     }
 }
