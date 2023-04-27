@@ -150,11 +150,9 @@ class MenuController extends ApiController
             return new JsonResponse(['errors' => $errors], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        $serializedMenu = $this->serializer->serialize(
-            $this->menuService->update($menu, $menuDto),
-            'json',
-            $this->getContext(true, ['menu'])
-        );
+        $menu = $this->menuService->update($menu, $menuDto);
+        $context = $this->getContext(true, ['menu']);
+        $serializedMenu = $this->serializer->serialize($menu, 'json', $context);
 
         return new JsonResponse(json_decode($serializedMenu), JsonResponse::HTTP_OK);
     }

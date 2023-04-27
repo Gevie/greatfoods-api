@@ -8,17 +8,16 @@ use App\Api\V1\Controller\MenuController;
 use App\Api\V1\Dto\MenuDto;
 use App\Api\V1\Entity\Menu;
 use App\Api\V1\Repository\MenuRepository;
-use App\Api\V1\Serializer\MenuSerializer;
 use App\Api\V1\Service\MenuService;
 use App\Tests\Stubs\Dto\MenuDtoStub;
 use App\Tests\Stubs\Entity\MenuStub;
+use JMS\Serializer\Context;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -136,7 +135,7 @@ class MenuControllerTest extends KernelTestCase
 
         $this->validator->expects($this->once())
             ->method('validate')
-            ->with($menuDto, null, ['create'])
+            ->with($menuDto)
             ->willReturn($constraintViolationList);
 
         $this->menuService->expects($this->once())
@@ -144,9 +143,13 @@ class MenuControllerTest extends KernelTestCase
             ->with($menuDto)
             ->willReturn($menu);
         
+        $serializationContext = SerializationContext::create()
+            ->setGroups(['menu'])
+            ->setSerializeNull(false);
+
         $this->serializer->expects($this->once())
             ->method('serialize')
-            ->with($menu, MenuSerializer::class)
+            ->with($menu, 'json', $serializationContext)
             ->willReturn($menuJson);
 
         // Act
@@ -196,7 +199,7 @@ class MenuControllerTest extends KernelTestCase
 
         $this->validator->expects($this->once())
             ->method('validate')
-            ->with($menuDto, null, ['create'])
+            ->with($menuDto)
             ->willReturn($constraintViolationList);
 
         // Act
@@ -218,7 +221,7 @@ class MenuControllerTest extends KernelTestCase
         // Arrange
         $menuId = 1;
         $menu = MenuStub::create();
-        $responseMessage = ['message' => 'Menu item deleted'];
+        $expectedResponse = '{"message":"Menu item \u00221\u0022 deleted"}';
 
         $this->menuRepository->expects($this->once())
             ->method('find')
@@ -235,7 +238,7 @@ class MenuControllerTest extends KernelTestCase
         // Assert
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(JsonResponse::HTTP_OK, $response->getStatusCode());
-        $this->assertSame(json_encode($responseMessage), $response->getContent());
+        $this->assertSame($expectedResponse, $response->getContent());
     }
 
     /**
@@ -252,12 +255,15 @@ class MenuControllerTest extends KernelTestCase
             ->with($menuId)
             ->willReturn(null);
 
-        // Assert
-        $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage(sprintf('Menu item "%d" not found', $menuId));
+        $expectedResponse = '{"error":"The \u0022Menu\u0022 record with id \u00221\u0022 could not be found."}';
 
         // Act
-        $this->menuController->delete($menuId);
+        $response = $this->menuController->delete($menuId);
+
+        // Assert
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals($expectedResponse, $response->getContent());
+        $this->assertEquals(JsonResponse::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
     /**
@@ -310,7 +316,7 @@ class MenuControllerTest extends KernelTestCase
 
         $this->serializer->expects($this->once())
             ->method('serialize')
-            ->with($menuEntity, MenuSerializer::class)
+            ->with($menuEntity, 'json')
             ->willReturn($menuJson);
 
         // Act
@@ -333,14 +339,17 @@ class MenuControllerTest extends KernelTestCase
         $this->menuRepository->expects($this->once())
             ->method('find')
             ->with(1)
-            ->willReturn(null);
+            ->willReturn(null);     
 
-        // Assert
-        $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage('Menu item "1" not found');
+        $expectedResponse = '{"error":"The \u0022Menu\u0022 record with id \u00221\u0022 could not be found."}';
 
         // Act
-        $this->menuController->show(1);
+        $response = $this->menuController->show(1);;
+
+        // Assert
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals($expectedResponse, $response->getContent());
+        $this->assertEquals(JsonResponse::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
     /**
@@ -367,10 +376,13 @@ class MenuControllerTest extends KernelTestCase
             ->method('find')
             ->with($menuId)
             ->willReturn($menu);
-
-        $this->serializer->method('serialize')
-            ->with($menu, 'json')
-            ->willReturn(json_encode($menu));
+        
+        $this->serializer->expects($this->exactly(2))
+            ->method('serialize')
+            ->willReturnOnConsecutiveCalls(
+                json_encode($menu),
+                $menuJson
+            );
 
         $this->serializer->expects($this->once())
             ->method('deserialize')
@@ -380,19 +392,13 @@ class MenuControllerTest extends KernelTestCase
         $constraintViolationList = $this->createMock(ConstraintViolationListInterface::class);
         $this->validator->expects($this->once())
             ->method('validate')
-            ->with($menuDto, null, ['create'])
+            ->with($menuDto)
             ->willReturn($constraintViolationList);
 
         $this->menuService->expects($this->once())
             ->method('update')
             ->with($menu, $menuDto)
             ->willReturn($menu);
-
-        $context = $this->createMock(SerializationContext::class);
-
-        $this->serializer->method('serialize')
-            ->with($menu, 'json', $context)
-            ->willReturn($menuJson);
 
         // Act
         $response = $this->menuController->update($request, $menuId);
