@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Api\V1\Repository;
 
-use App\Entity\Menu;
-use App\Api\V1\Repository\MenuRepository;
+use App\Entity\User;
+use App\Api\V1\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
@@ -24,7 +24,8 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  * @group api_v1
  * @group repository
  */
-class MenuRepositoryTest extends KernelTestCase
+
+class UserRepositoryTest extends KernelTestCase
 {
     /**
      * The class metadata.
@@ -58,16 +59,14 @@ class MenuRepositoryTest extends KernelTestCase
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->registry = $this->createMock(ManagerRegistry::class);
 
-
         $this->entityManager->expects($this->once())
             ->method('getClassMetadata')
-            ->with(Menu::class)
+            ->with(User::class)
             ->willReturn($this->classMetadata);
 
-            dump(Menu::class);
         $this->registry->expects($this->once())
             ->method('getManagerForClass')
-            ->with(Menu::class)
+            ->with(User::class)
             ->willReturn($this->entityManager);
     }
 
@@ -93,11 +92,11 @@ class MenuRepositoryTest extends KernelTestCase
     public function testPermanentlyRemove(): void
     {
         // Arrange
-        $menu = $this->createMock(Menu::class);
-        $menuRepository = new MenuRepository($this->registry);
+        $user = $this->createMock(User::class);
+        $userRepository = new UserRepository($this->registry);
 
         // Act
-        $menuRepository->permanentlyRemove($menu, true);
+        $userRepository->permanentlyRemove($user, true);
     }
 
     /**
@@ -108,14 +107,14 @@ class MenuRepositoryTest extends KernelTestCase
     public function testRemove(): void
     {
         // Arrange
-        $menu = $this->createMock(Menu::class);
-        $menu->expects($this->once())
+        $user = $this->createMock(User::class);
+        $user->expects($this->once())
             ->method('delete');
 
-        $menuRepository = new MenuRepository($this->registry);
+        $userRepository = new UserRepository($this->registry);
 
         // Act
-        $menuRepository->remove($menu, true);
+        $userRepository->remove($user, true);
     }
 
     /**
@@ -126,18 +125,18 @@ class MenuRepositoryTest extends KernelTestCase
     public function testSave(): void
     {
         // Arrange
-        $menu = $this->createMock(Menu::class);
-        $menuRepository = new MenuRepository($this->registry);
+        $user = $this->createMock(User::class);
+        $userRepository = new UserRepository($this->registry);
 
         $this->entityManager->expects($this->once())
             ->method('persist')
-            ->with($menu);
+            ->with($user);
 
         $this->entityManager->expects($this->once())
             ->method('flush');
 
         // Act
-        $menuRepository->save($menu, true);
+        $userRepository->save($user, true);
     }
 
     /**
@@ -148,17 +147,17 @@ class MenuRepositoryTest extends KernelTestCase
     public function testSaveWithoutFlush(): void
     {
         // Arrange
-        $menu = $this->createMock(Menu::class);
-        $menuRepository = new MenuRepository($this->registry);
+        $user = $this->createMock(User::class);
+        $userRepository = new UserRepository($this->registry);
 
         $this->entityManager->expects($this->once())
             ->method('persist')
-            ->with($menu);
+            ->with($user);
 
         $this->entityManager->expects($this->never())
             ->method('flush');
 
         // Act
-        $menuRepository->save($menu);
+        $userRepository->save($user);
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Api\V1\Serializer;
 
-use App\Api\V1\Entity\Menu;
+use App\Entity\Menu;
 use App\Api\V1\Serializer\MenuSerializer;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
@@ -208,7 +208,7 @@ class MenuSerializerTest extends TestCase
     
         // Assert
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('App\Api\V1\Serializer\MenuSerializer::serialize(): Argument #1 ($menu) must be of type App\Api\V1\Entity\Menu, stdClass given');
+        $this->expectExceptionMessage('App\Api\V1\Serializer\MenuSerializer::serialize(): Argument #1 ($menu) must be of type App\Entity\Menu, stdClass given');
     
         // Act
         $this->menuSerializer->serialize($invalidObject);

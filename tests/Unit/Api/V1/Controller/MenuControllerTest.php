@@ -6,7 +6,7 @@ namespace App\Tests\Unit\Api\V1\Controller;
 
 use App\Api\V1\Controller\MenuController;
 use App\Api\V1\Dto\MenuDto;
-use App\Api\V1\Entity\Menu;
+use App\Entity\Menu;
 use App\Api\V1\Repository\MenuRepository;
 use App\Api\V1\Service\MenuService;
 use App\Tests\Stubs\Dto\MenuDtoStub;

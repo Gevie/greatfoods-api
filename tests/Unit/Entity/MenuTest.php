@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Api\V1\Entity;
+namespace App\Tests\Unit\Entity;
 
-use App\Api\V1\Entity\Menu;
+use App\Entity\Menu;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -13,11 +13,10 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  * 
  * Provides unit tests for the API v1 Menu entity.
  * 
- * @package App\Tests\Unit\Api\V1\Entity
+ * @package App\Tests\Unit\Entity
  * @author Stephen Speakman <hellospeakman@gmail.com>
  * 
  * @group api
- * @group api_v1
  * @group entity
  */
 class MenuTest extends KernelTestCase

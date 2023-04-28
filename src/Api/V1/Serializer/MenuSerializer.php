@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\V1\Serializer;
 
-use App\Api\V1\Entity\Menu;
+use App\Entity\Menu;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;

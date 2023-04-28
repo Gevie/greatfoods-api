@@ -97,6 +97,16 @@ trait LifecycleTrait
     {
         return $this->deleted !== null;
     }
+    
+    /**
+     * Restores a deleted menu item.
+     *
+     * @return void
+     */
+    public function restore(): void
+    {
+        $this->deleted = null;
+    }
 
     /**
      * Sets the created timestamp of the entity to the current time on persist.

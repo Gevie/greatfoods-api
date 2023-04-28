@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Api\V1\Service;
 
 use App\Api\V1\Dto\MenuDto;
-use App\Api\V1\Entity\Menu;
+use App\Entity\Menu;
 use App\Api\V1\Service\MenuService;
 use App\Contracts\Repository\MenuRepository as MenuRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;

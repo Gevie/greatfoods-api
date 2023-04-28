@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Stubs\Entity;
 
-use App\Api\V1\Entity\Menu;
+use App\Entity\Menu;
 
 /**
  * Class MenuStub

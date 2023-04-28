@@ -19,8 +19,8 @@ doctrine:
                 alias: App
             ApiV1:
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Api/V1/Entity'
-                prefix: 'App\Api\V1\Entity'
+                dir: '%kernel.project_dir%/src/Entity'
+                prefix: 'App\Entity'
                 alias: 'ApiV1'
         filters:
             soft_delete:
