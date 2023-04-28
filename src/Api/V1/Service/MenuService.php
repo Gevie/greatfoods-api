@@ -6,7 +6,7 @@ namespace App\Api\V1\Service;
 
 use App\Api\V1\Dto\MenuDto;
 use App\Entity\Menu;
-use App\Contracts\Repository\MenuRepository as MenuRepositoryInterface;
+use App\Api\V1\Repository\MenuRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -23,11 +23,11 @@ class MenuService
      * MenuService constructor.
      *
      * @param EntityManagerInterface $entityManager The entity manager
-     * @param MenuRepositoryInterface $menuRepository The menu repository
+     * @param MenuRepository $menuRepository The menu repository
      */
     public function __construct(
         protected EntityManagerInterface $entityManager,
-        protected MenuRepositoryInterface $menuRepository
+        protected MenuRepository $menuRepository
     ) {
         // ...
     }
@@ -63,8 +63,7 @@ class MenuService
      */
     public function delete(Menu $menu): void
     {
-        $menu->delete();
-        $this->menuRepository->save($menu, true);
+        $this->menuRepository->remove($menu, true);
     }
 
     /**

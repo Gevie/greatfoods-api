@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\V1\Repository;
 
+use App\Contracts\Repository\SoftDelete as SoftDeleteInterface;
 use App\Entity\User;
 use App\Repository\AbstractRepository;
 use App\Traits\Repository\SoftDeleteTrait;
@@ -14,10 +15,10 @@ use Doctrine\Persistence\ManagerRegistry;
  *
  * This class is a Doctrine repository for managing User entities in the application.
  *
- * @package App\Repository
+ * @package App\Api\V1\Repository
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */
-class UserRepository extends AbstractRepository
+class UserRepository extends AbstractRepository implements SoftDeleteInterface
 {
     use SoftDeleteTrait;
 

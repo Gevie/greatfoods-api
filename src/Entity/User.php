@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Contracts\Entity\Lifecycle as LifecycleInterface;
+use App\Contracts\Entity\SoftDeletable as SoftDeletableInterface;
 use App\Repository\UserRepository;
 use App\Traits\Entity\LifecycleTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,7 +24,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks()]
 #[ORM\Table(name: 'users')]
-class User extends AbstractEntity implements LifecycleInterface, PasswordAuthenticatedUserInterface, UserInterface
+class User extends AbstractEntity implements LifecycleInterface, SoftDeletableInterface, PasswordAuthenticatedUserInterface, UserInterface
 {
     use LifecycleTrait;
 

@@ -7,6 +7,7 @@ namespace App\Api\V1\Controller;
 use App\Api\V1\Dto\MenuDto;
 use App\Api\V1\Repository\MenuRepository;
 use App\Api\V1\Service\MenuService;
+use App\Entity\Menu;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -47,7 +48,7 @@ class MenuController extends ApiController
      *
      * @param Request $request The HTTP request object
      *
-     * @return JsonResponse The JSON response containing the newly created menu entity
+     * @return JsonResponse The JSON response containing the newly created menu entity or error list
      */
     #[Route(null, name: 'create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
@@ -78,6 +79,7 @@ class MenuController extends ApiController
     #[Route('/{menuId}', name: 'delete', methods: ['DELETE'])]
     public function delete(int $menuId): JsonResponse
     {
+        /** @var Menu|null */
         $menu = $this->menuRepository->find($menuId);
         if (! $menu) {
             return $this->entityNotFoundResponse('Menu', $menuId);
@@ -136,6 +138,7 @@ class MenuController extends ApiController
     #[Route('/{menuId}', name: 'update', methods: ['PATCH', 'PUT'])]
     public function update(Request $request, int $menuId): JsonResponse
     {
+        /** @var Menu|null */
         $menu = $this->menuRepository->find($menuId);
         if (! $menu) {
             return $this->entityNotFoundResponse('Menu', $menuId);

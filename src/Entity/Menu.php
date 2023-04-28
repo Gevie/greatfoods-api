@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Api\V1\Repository\MenuRepository;
 use App\Contracts\Entity\Lifecycle as LifecycleInterface;
+use App\Contracts\Entity\SoftDeletable as SoftDeletableInterface;
 use App\Entity\AbstractEntity;
 use App\Traits\Entity\LifecycleTrait;
 use Doctrine\DBAL\Types\Types;
@@ -23,7 +24,7 @@ use JMS\Serializer\Annotation as Serializer;
 #[ORM\Entity(repositoryClass: MenuRepository::class)]
 #[ORM\HasLifecycleCallbacks()]
 #[ORM\Table(name: 'menus')]
-class Menu extends AbstractEntity implements LifecycleInterface
+class Menu extends AbstractEntity implements LifecycleInterface, SoftDeletableInterface
 {
     use LifecycleTrait;
 

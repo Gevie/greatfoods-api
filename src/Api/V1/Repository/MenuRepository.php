@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\V1\Repository;
 
+use App\Contracts\Repository\SoftDelete as SoftDeleteInterface;
 use App\Entity\Menu;
 use App\Repository\AbstractRepository;
 use App\Traits\Repository\SoftDeleteTrait;
@@ -17,7 +18,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @package App\Api\V1\Repository
  * @author Stephen Speakman <hellospeakman@gmail.com>
  */
-class MenuRepository extends AbstractRepository
+class MenuRepository extends AbstractRepository implements SoftDeleteInterface
 {
     use SoftDeleteTrait;
 
